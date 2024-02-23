@@ -16,6 +16,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddService();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
+//for Jwt authentication
+builder.Services.AddJwtService(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

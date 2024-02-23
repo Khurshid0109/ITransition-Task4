@@ -1,7 +1,7 @@
+using System.Security.Claims;
 using Management.Service.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Management.Service.Interfaces;
-using System.Security.Claims;
 
 namespace ITransition_Task4.Controllers
 {
@@ -37,7 +37,6 @@ namespace ITransition_Task4.Controllers
             }
             else
             {
-                // Handle the case when model or selectedUserIds is null or empty
                 return BadRequest("Invalid data");
             }
         }
@@ -56,7 +55,6 @@ namespace ITransition_Task4.Controllers
             }
             else
             {
-                // Handle the case when model or selectedUserIds is null or empty
                 return BadRequest("Invalid data");
             }
         }
@@ -80,7 +78,6 @@ namespace ITransition_Task4.Controllers
             }
             else
             {
-                // Handle the case when model or selectedUserIds is null or empty
                 return BadRequest("Invalid data");
             }
         }

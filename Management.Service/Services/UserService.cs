@@ -12,15 +12,17 @@ namespace Management.Service.Services;
 public class UserService : IUserService
 {
     private readonly IRepository _repository;
+    private readonly IJwtTokenService _jwtTokenService;
     private readonly IMapper _mapper;
 
-    public UserService(IRepository repository, IMapper mapper)
+    public UserService(IRepository repository, IMapper mapper, IJwtTokenService jwtTokenService)
     {
         _repository = repository;
         _mapper = mapper;
+        _jwtTokenService = jwtTokenService;
     }
 
-    public async Task<UserViewModel> AddAsync(UserPostModel dto)
+    public async Task<LoginViewModel> AddAsync(UserPostModel dto)
     {
         var user = await _repository.SelectAll()
             .Where(u=>u.Email.ToLower() == dto.Email.ToLower())
@@ -33,11 +35,19 @@ public class UserService : IUserService
         var mapped=_mapper.Map<User>(dto);
         mapped.CreatedAt = DateTime.UtcNow;
         mapped.Password= HashPasswordHelper.PasswordHasher(dto.Password);
+        (mapped.RefreshToken, mapped.ExpireDate) = await _jwtTokenService.GenerateRefreshTokenAsync();
 
         var result = await _repository.InsertAsync(mapped);
         await _repository.SaveAsync();
 
-        return _mapper.Map<UserViewModel>(result);
+        var userView = _mapper.Map<UserViewModel>(result);
+        (string token, DateTime expireDate) = await _jwtTokenService.GenerateTokenAsync(userView);
+
+        return new LoginViewModel
+        {
+            Token = token,
+            AccessTokenExpireDate = expireDate,
+        };
     }
 
     public async Task<bool> BlockUsersAsync(List<long> ids)
@@ -57,7 +67,7 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<bool> LoginAsync(LoginPostModel dto)
+    public async Task<LoginViewModel> LoginAsync(LoginPostModel dto)
     {
         var user = await _repository.SelectAll()
             .Where(u => u.Email.ToLower() == dto.Email.ToLower())
@@ -68,13 +78,20 @@ public class UserService : IUserService
             throw new ManagementException(404, "User is not found!");
 
         if (!HashPasswordHelper.IsEqual(dto.Password, user.Password))
-            return false;
+            throw new ManagementException(400,"email or password is incorrect!");
 
         user.LastLoginDate = DateTime.UtcNow;
         await _repository.UpdateAsync(user);
         await _repository.SaveAsync();
 
-        return true;
+        var userView = _mapper.Map<UserViewModel>(user);
+        (string token, DateTime expireDate) = await _jwtTokenService.GenerateTokenAsync(userView);
+
+        return new LoginViewModel
+        {
+            Token = token,
+            AccessTokenExpireDate = expireDate,
+        };
     }
 
     public Task<UserViewModel> ModifyAsync(long id, UserPutModel dto)

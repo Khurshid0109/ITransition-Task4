@@ -23,10 +23,36 @@ public class AccessController : Controller
     {
         if (ModelState.IsValid)
         {
-            var result = await _userService.LoginAsync(model);
+            try
+            {
+                var result = await _userService.LoginAsync(model);
 
-            if (result is true)
-                return Redirect("~/Home/Index");
+                // Check if the login was successful and an access token is available
+                if (!string.IsNullOrEmpty(result.Token))
+                {
+                    // Set a cookie with the access token
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,  
+                        SameSite = SameSiteMode.Strict,
+                        Expires = result.AccessTokenExpireDate
+                    };
+
+                    Response.Cookies.Append("token", result.Token, cookieOptions);
+
+                    // Redirect to the desired page after successful registration
+                    return Redirect("~/Home/Index");
+                }
+
+                // Handle the case when registration was not successful
+                ModelState.AddModelError("", "Login failed");
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            
         }
         return View();
     }
@@ -42,8 +68,35 @@ public class AccessController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = await _userService.AddAsync(model);
-            return Redirect("~/Home/Index");
+            try
+            {
+                var result = await _userService.AddAsync(model);
+
+                // Check if the registration was successful and an access token is available
+                if (!string.IsNullOrEmpty(result.Token))
+                {
+                    // Set a cookie with the access token
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = result.AccessTokenExpireDate
+                    };
+
+                    Response.Cookies.Append("token", result.Token, cookieOptions);
+
+                    // Redirect to the desired page after successful registration
+                    return Redirect("~/Home/Index");
+                }
+
+                // Handle the case when registration was not successful
+                ModelState.AddModelError("", "Registration failed");
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
         }
         return View();
     }

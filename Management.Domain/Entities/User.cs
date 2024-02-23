@@ -10,4 +10,7 @@ public class User:Auditable
     public string Password { get; set; }
     public DateTime? LastLoginDate { get; set; }
     public Status Status { get; set; }
+    public Role Role { get; set; }
+    public string RefreshToken { get; set; }
+    public DateTime ExpireDate { get; set; }
 }
