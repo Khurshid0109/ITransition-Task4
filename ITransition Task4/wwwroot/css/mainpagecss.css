@@ -1,0 +1,64 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-image: url("../Images/image3.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.wrapper{
+    margin-top:30px;
+    justify-content:center;
+}
+
+.background {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+}
+
+    .background::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: .1;
+    }
+
+.todos-column {
+    vertical-align: middle;
+    font-weight: bolder;
+    color: green;
+}
+
+
+/* Style for toolbar */
+.toolbar {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+    /* Style for each button */
+    .toolbar button {
+        margin-left: 10px; /* Add margin to separate buttons */
+    }

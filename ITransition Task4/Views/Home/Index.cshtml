@@ -1,0 +1,68 @@
+﻿@model IEnumerable<UserViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+<div class="wrapper row ">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div class="toolbar mb-3">
+        <button class="btn btn-danger" value="Block" onclick="blockSelected()">Block</button>
+        <button class="btn btn-secondary" value="UnBlock" onclick="unblockSelected()">Unblock</button>
+        <button class="btn btn-primary"  value="Delete" onclick="deleteSelected()">Delete</button>
+    </div>
+
+    <input type="hidden" id="selectedUserIds" name="selectedUserIds" />
+
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col"></th>
+                    <th scope="col">Id</th>
+                    <th scope="col">FirstName</th>
+                    <th scope="col">LastName</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Created Time</th>
+                    <th scope="col">LastLogin date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            @{
+                int count = 1;
+            }
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>
+                            <input class="checkbox__input" onclick="funcCheckboxUser(@user.Id)" type="checkbox" name="selectedUserIds" value="@user.Id" />
+                        </td>
+                        <th class="todos-column" scope="row">@count</th>
+                        <td class="todos-column" scope="row">@user.FirstName</td>
+                        <td class="todos-column" scope="row">@user.LastName</td>
+                        <td class="todos-column" scope="row">@user.Email</td>
+                        <td class="todos-column">@user.CreatedAt.ToString("dd.MM.yyyy")</td>
+                        <td class="todos-column">
+                            @{
+                                if (user.LastLoginDate is not null)
+                                {
+                                    @user.CreatedAt.ToString("dd.MM.yyyy")
+                                    ;
+                                }
+                                else
+                                {
+                                    @("")
+                                    ;
+                                }
+                            }
+                        </td>
+                        <td class="todos-column" scope="row">@user.Status</td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
