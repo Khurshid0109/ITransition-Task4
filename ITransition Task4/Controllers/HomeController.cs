@@ -35,16 +35,17 @@ namespace ITransition_Task4.Controllers
 
                     await _userService.BlockUsersAsync(ids);
 
+                    // Get current user id
                     var userId = GetUserId();
 
                     if (ids.Contains(userId) || userId == 0)
-                        return StatusCode(403);
+                        return StatusCode(428, "You have just blocked yourself.");
 
                     return Ok();
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    return BadRequest(e.Message); 
+                    return BadRequest(ex.Message); 
                 }
             }
             else
@@ -59,10 +60,17 @@ namespace ITransition_Task4.Controllers
 
             if (model != null && !string.IsNullOrEmpty(model.selectedUserIds))
             {
-                var ids = model.selectedUserIds.Split(',').Select(id => long.Parse(id)).ToList();
-                await _userService.UnBlockUsersAsync(ids);
+                try
+                {
+                    var ids = model.selectedUserIds.Split(',').Select(id => long.Parse(id)).ToList();
+                    await _userService.UnBlockUsersAsync(ids);
 
-                return Redirect("~/Home/Index");
+                    return Ok();
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
             else
             {
@@ -82,7 +90,13 @@ namespace ITransition_Task4.Controllers
                     
                     await _userService.RemoveUsersAsync(ids);
 
-                    return Redirect("~/Home/Index");
+                    // Get current user id
+                    var userId = GetUserId();
+
+                    if (ids.Contains(userId) || userId == 0)
+                        return StatusCode(403, "You have just deleted yourself.");
+
+                    return Ok();
                 }
                 catch (Exception e) 
                 { 

@@ -41,11 +41,11 @@ public class AccessController : Controller
 
                     Response.Cookies.Append("token", result.Token, cookieOptions);
 
-                    // Redirect to the desired page after successful registration
+                    // Redirect to the desired page after successful login
                     return Redirect("~/Home/Index");
                 }
 
-                // Handle the case when registration was not successful
+                // Handle the case when login was not successful
                 ModelState.AddModelError("", "Login failed");
             }
             catch(Exception ex)

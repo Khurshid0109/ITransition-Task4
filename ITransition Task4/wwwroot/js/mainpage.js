@@ -6,8 +6,10 @@ usersidString = "";
 const userId = [];
 function funcCheckboxUser(id) {
     let found = false;
+
     if (userId.length === 0)
         userId.push(id)
+
     else {
         for (let i = 0; i < userId.length; i++) {
             if (userId[i] === id) {
@@ -33,8 +35,20 @@ function blockSelected() {
         data: JSON.stringify({ selectedUserIds: usersidString }),
         success: function () {
             window.location.reload();
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 428) {
+                // User has blocked themselves, redirect to the login page
+                window.location.href = '/Access/Login';
+
+                alert(xhr.responseText);
+            }
+            else {
+                console.error(xhr.responseText);
+                alert('An error occurred while processing the request.');
+            }
         }
-        
+
     });
 }
 
@@ -48,6 +62,9 @@ function unblockSelected() {
         data: JSON.stringify({ selectedUserIds: usersidString }),
         success: function () {
             window.location.reload();
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
         }
     });
 }
@@ -62,6 +79,18 @@ function deleteSelected() {
         data: JSON.stringify({ selectedUserIds: usersidString }),
         success: function () {
             window.location.reload();
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 403) {
+                // User has deleted themselves, redirect to the register page
+                window.location.href = '/Access/Register';
+
+                alert(xhr.responseText);
+            }
+            else {
+                console.error(xhr.responseText);
+                alert('An error occurred while processing the request.');
+            }
         }
     });
 }
