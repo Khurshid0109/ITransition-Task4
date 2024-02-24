@@ -16,15 +16,15 @@ public class ExceptionHandlerMiddleware
         try
         {
             await _next(context);
+            if (context.Response.StatusCode == StatusCodes.Status404NotFound)
+                context.Response.Redirect("/ErrorHandler/GlobalError?statusCode=404");
         }
         catch (ManagementException ex)
         {
-            Console.WriteLine(ex.Message);
             context.Response.Redirect($"/ErrorHandler/GlobalError?statusCode={ex.StatusCode}");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
             context.Response.Redirect($"/ErrorHandler/GlobalError?statusCode=500");
         }
     }

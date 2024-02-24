@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Management.Service.DTOs;
-using Microsoft.AspNetCore.Mvc;
 using Management.Service.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ITransition_Task4.Controllers
 {
@@ -26,14 +26,26 @@ namespace ITransition_Task4.Controllers
         [HttpPost]
         public async Task<IActionResult> Block([FromBody] UserIdsModel model)
         {
-            Console.WriteLine("hsevfsekfse");
 
             if (model != null && !string.IsNullOrEmpty(model.selectedUserIds))
             {
-                var ids = model.selectedUserIds.Split(',').Select(id => long.Parse(id)).ToList();
-                await _userService.BlockUsersAsync(ids);
+                try
+                {
+                    var ids = model.selectedUserIds.Split(',').Select(id => long.Parse(id)).ToList();
 
-                return Redirect("~/Access/Login");
+                    await _userService.BlockUsersAsync(ids);
+
+                    var userId = GetUserId();
+
+                    if (ids.Contains(userId) || userId == 0)
+                        return StatusCode(403);
+
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message); 
+                }
             }
             else
             {
@@ -44,7 +56,6 @@ namespace ITransition_Task4.Controllers
         [HttpPost]
         public async Task<IActionResult> UnBlock([FromBody] UserIdsModel model)
         {
-            Console.WriteLine("hsevfsekfse");
 
             if (model != null && !string.IsNullOrEmpty(model.selectedUserIds))
             {
@@ -62,23 +73,45 @@ namespace ITransition_Task4.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] UserIdsModel model)
         {
-            Console.WriteLine("hsevfsekfse");
-
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                var currentUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
 
             if (model != null && !string.IsNullOrEmpty(model.selectedUserIds))
             {
-                var ids = model.selectedUserIds.Split(',').Select(id => long.Parse(id)).ToList();
-                await _userService.RemoveUsersAsync(ids);
+                try
+                {
+                    var ids = model.selectedUserIds.Split(',').Select(id => long.Parse(id)).ToList();
+                    
+                    await _userService.RemoveUsersAsync(ids);
 
-                return Redirect("~/Home/Index");
+                    return Redirect("~/Home/Index");
+                }
+                catch (Exception e) 
+                { 
+                    return BadRequest(e.Message); 
+                }
             }
             else
             {
                 return BadRequest("Invalid data");
+            }
+        }
+
+        private long GetUserId()
+        {
+            var token = HttpContext.Request.Cookies["token"];
+
+            if (string.IsNullOrEmpty(token))
+                return 0;
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+                var userId = jwtToken.Claims.First(claim => claim.Type == "Id").Value;
+                return long.Parse(userId);
+            }
+            catch (Exception)
+            {
+                return 0;
             }
         }
 

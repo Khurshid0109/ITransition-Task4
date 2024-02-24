@@ -21,12 +21,19 @@ builder.Services.AddJwtService(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+app.Use(async (ctx, next) =>
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+    await next();
+
+
+    if (ctx.Response.StatusCode == 404)
+    {
+        ctx.Request.Path = "/ErrorHandler/GlobalError?statusCode=" + ctx.Response.StatusCode;
+        await next();
+    }
+
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -39,10 +46,12 @@ app.UseCors(cors =>
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();    
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
@@ -50,6 +59,6 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "Main",
-    pattern: "{controller=Home}/{action=Index}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

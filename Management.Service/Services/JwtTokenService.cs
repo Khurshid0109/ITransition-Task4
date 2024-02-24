@@ -1,9 +1,8 @@
 ﻿using System.Text;
 using System.Security.Claims;
-using Management.Domain.Enums;
 using Management.Service.DTOs;
-using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
 using Management.Service.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -58,47 +57,5 @@ public class JwtTokenService:IJwtTokenService
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return Task.FromResult((tokenHandler.WriteToken(token), expireDate));
-    }
-
-    public Task<UserViewModel?> GetUserByAccessTokenAsync(string accessToken)
-    {
-        if (string.IsNullOrEmpty(accessToken))
-            return Task.FromResult<UserViewModel?>(null);
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        string secretKey = _configuration["JWT:Key"] ?? throw new ArgumentNullException("Key");
-        var key = Encoding.ASCII.GetBytes(secretKey);
-        try
-        {
-            tokenHandler.ValidateToken(accessToken, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            Role role = (Role)Enum.Parse(typeof(Role), jwtToken.Claims.First(x => x.Type == "Role").Value, true);
-            var user = new UserViewModel
-            {
-                Id = long.Parse(jwtToken.Claims.First(x => x.Type == "Id").Value),
-                FirstName = jwtToken.Claims.First(x => x.Type == "Name").Value.Split().First(),
-                LastName = jwtToken.Claims.First(x => x.Type == "Name").Value.Split().Last(),
-                Role = role,
-                Email = jwtToken.Claims.First(x => x.Type == "Email").Value,
-            };
-            return Task.FromResult<UserViewModel?>(user);
-        }
-        catch (SecurityTokenExpiredException ex)
-        {
-            _logger.LogInformation("Token has expired");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error when validate token");
-            return Task.FromResult<UserViewModel?>(null);
-        }
     }
 }

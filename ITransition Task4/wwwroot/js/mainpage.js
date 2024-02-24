@@ -1,6 +1,4 @@
 ﻿
-
-// Function to update the hidden input with selected user IDs
 const checkidUser = document.querySelector(".checkbox__input")
 console.log(checkidUser);
 usersidString = "";
@@ -36,6 +34,7 @@ function blockSelected() {
         success: function () {
             window.location.reload();
         }
+        
     });
 }
 
