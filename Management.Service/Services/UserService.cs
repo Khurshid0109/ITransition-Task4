@@ -80,6 +80,9 @@ public class UserService : IUserService
         if (!HashPasswordHelper.IsEqual(dto.Password, user.Password))
             throw new ManagementException(400,"email or password is incorrect!");
 
+        if (user.Status == Status.Blocked)
+            throw new ManagementException(400, "You can not enter there!");
+
         user.LastLoginDate = DateTime.UtcNow;
         await _repository.UpdateAsync(user);
         await _repository.SaveAsync();
