@@ -28,8 +28,7 @@
   <h2>Installation</h2>
   <ol>
     <li><strong>Clone the repository:</strong>
-      <pre><code>git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+      <pre><code>git clone https://github.com/Khurshid0109/ITransition-Task4
       </code></pre>
     </li>
     <li><strong>Setup the environment:</strong>
@@ -52,6 +51,7 @@ cd your-repo-name
   <ol>
     <li><strong>Register:</strong>
       <p>Open the application in your browser and navigate to the registration page. Provide the required information to create a new account.</p>
+      <img src="/Management/wwwroot/Images/Login.jpg>
     </li>
     <li><strong>Login:</strong>
       <p>After registering, log in using your credentials.</p>
@@ -68,6 +68,6 @@ cd your-repo-name
   </ol>
 
   <h2>Contact</h2>
-  <p>For any inquiries or issues, please contact <a href="mailto:xurshidyoldoshev4@gmail.com">your-email@example.com</a>.</p>
+  <p>For any inquiries or issues, please contact <a href="mailto:xurshidyoldoshev4@gmail.com">Me</a>.</p>
 </body>
 </html>
