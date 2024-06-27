@@ -66,7 +66,7 @@
         <li><strong>Self-Management:</strong> You can block or delete your own account.</li>
       </ul>
     </li>
-     <img src="https://github.com/Khurshid0109/ITransition-Task4/blob/master/ITransition%20Task4/wwwroot/Images/Main.png" alt="Image>
+     <img src="https://github.com/Khurshid0109/ITransition-Task4/blob/master/ITransition%20Task4/wwwroot/Images/Main.png" alt="Image">
   </ol>
 
   <h2>Contact</h2>
