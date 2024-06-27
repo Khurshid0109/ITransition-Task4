@@ -51,10 +51,11 @@
   <ol>
     <li><strong>Register:</strong>
       <p>Open the application in your browser and navigate to the registration page. Provide the required information to create a new account.</p>
-      <img src="/Management/wwwroot/Images/Login.jpg">
+      <img src="https://github.com/Khurshid0109/ITransition-Task4/blob/master/ITransition%20Task4/wwwroot/Images/Register.png" alt="Image">
     </li>
     <li><strong>Login:</strong>
       <p>After registering, log in using your credentials.</p>
+         <img src="https://github.com/Khurshid0109/ITransition-Task4/blob/master/ITransition%20Task4/wwwroot/Images/Login.png" alt="Image">
     </li>
     <li><strong>Manage Users:</strong>
       <p>Once logged in, you can:</p>
@@ -65,6 +66,7 @@
         <li><strong>Self-Management:</strong> You can block or delete your own account.</li>
       </ul>
     </li>
+     <img src="https://github.com/Khurshid0109/ITransition-Task4/blob/master/ITransition%20Task4/wwwroot/Images/Main.png" alt="Image>
   </ol>
 
   <h2>Contact</h2>
