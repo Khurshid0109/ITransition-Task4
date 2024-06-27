@@ -51,7 +51,7 @@
   <ol>
     <li><strong>Register:</strong>
       <p>Open the application in your browser and navigate to the registration page. Provide the required information to create a new account.</p>
-      <img src="/Management/wwwroot/Images/Login.jpg>
+      <img src="/Management/wwwroot/Images/Login.jpg">
     </li>
     <li><strong>Login:</strong>
       <p>After registering, log in using your credentials.</p>
