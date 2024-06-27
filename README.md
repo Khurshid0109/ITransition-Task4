@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Name</title>
 </head>
 <body>
   <h1>Project Name</h1>
@@ -38,32 +37,8 @@ cd your-repo-name
     </li>
     <li><strong>Configure the application:</strong>
       <p>Update the <code>appsettings.json</code> file with your database and email configurations.</p>
-      <pre><code>{
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*",
-  "ConnectionStrings": {
-    "Default": "YourDatabaseConnectionString"
-  },
-  "JWT": {
-    "Key": "YourJWTKey",
-    "Audience": "YourJWTAudience",
-    "Issuer": "YourJWTIssuer",
-    "AccessTokenExpireMinutes": 20,
-    "RefreshTokenValidityHours": 5640
-  },
-  "Email": {
-    "Host": "smtp.your-email-provider.com",
-    "EmailAddress": "your-email@example.com",
-    "Password": "your-email-password"
-  },
-  "BaseUrl": "http://localhost:7053"
+      lhost:7053"
 }
-      </code></pre>
     </li>
     <li><strong>Restore dependencies:</strong>
       <pre><code>dotnet restore</code></pre>
@@ -92,13 +67,7 @@ cd your-repo-name
     </li>
   </ol>
 
-  <h2>Contributing</h2>
-  <p>We welcome contributions! Please read our <a href="CONTRIBUTING.md">Contributing Guidelines</a> before submitting a pull request.</p>
-
-  <h2>License</h2>
-  <p>This project is licensed under the MIT License. See the <a href="LICENSE">LICENSE</a> file for details.</p>
-
   <h2>Contact</h2>
-  <p>For any inquiries or issues, please contact <a href="mailto:your-email@example.com">your-email@example.com</a>.</p>
+  <p>For any inquiries or issues, please contact <a href="mailto:xurshidyoldoshev4@gmail.com">your-email@example.com</a>.</p>
 </body>
 </html>
